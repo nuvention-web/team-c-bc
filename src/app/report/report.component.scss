@@ -1,0 +1,17 @@
+.report {
+  mat-card {
+    margin-bottom: 8px;
+
+    p {
+      #time {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+      }
+
+      #milestone {
+        font-size: 12px;
+        margin-left: 8px;
+      }
+    }
+  }
+}

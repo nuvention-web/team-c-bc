@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Repo } from './repo';
 import { Issue } from './issue';
 import { Commit } from './commit';
+import { Response } from './response';
 
 
 @Injectable()
@@ -17,22 +18,22 @@ export class RepoService {
     return this.http.get<Repo>(`${RepoService.prefix}/repos/${userName}/${repoName}`);
   }
 
-  public getOpenIssueEvents(userName, repoName): Observable<Issue[]> {
-    const one_day = 1000 * 60 * 60 * 24;
-    // https://api.github.com/repos/nuvention-web/team-c-bc/issues/events?since=2018-01-21T00:00:00Z&state=all
-    const since_time = new Date(new Date().getTime() - one_day * 7).toISOString();
-    return this.http.get<Issue[]>(`${RepoService.prefix}/repos/${userName}/${repoName}/issues?since=${since_time}&state=open`);
+  public getOpenIssueEvents(userName, repoName, since_time): Observable<Issue[]> {
+    return this.http.get<Issue[]>(`${RepoService.prefix}/repos/${userName}/${repoName}` +
+      `/issues?since=${new Date(since_time).toISOString()}&state=open`);
   }
 
-  public getClosedIssueEvents(userName, repoName): Observable<Issue[]> {
-    const one_day = 1000 * 60 * 60 * 24;
-    const since_time = new Date(new Date().getTime() - one_day * 7).toISOString();
-    return this.http.get<Issue[]>(`${RepoService.prefix}/repos/${userName}/${repoName}/issues?since=${since_time}&state=closed`);
+  public getClosedIssueEvents(userName, repoName, since_time): Observable<Issue[]> {
+    return this.http.get<Issue[]>(`${RepoService.prefix}/repos/${userName}/${repoName}` +
+      `/issues?since=${new Date(since_time).toISOString()}&state=closed`);
   }
 
-  public getCommits(userName, repoName): Observable<Commit[]> {
-    const one_day = 1000 * 60 * 60 * 24;
-    const since_time = new Date(new Date().getTime() - one_day * 7).toISOString();
-    return this.http.get<Commit[]>(`${RepoService.prefix}/repos/${userName}/${repoName}/commits?since=${since_time}`);
+  public getCommits(userName, repoName, since_time, to_time): Observable<Commit[]> {
+    return this.http.get<Commit[]>(`${RepoService.prefix}/repos/${userName}/${repoName}` +
+      `/commits?since=${new Date(since_time).toISOString()}&until=${new Date(to_time).toISOString()}`);
+  }
+
+  public sendEmail(logId): Observable<Response> {
+    return this.http.get<Response>(`https://us-central1-github-weekly-summarizer.cloudfunctions.net/app/send-email?id=${logId}`);
   }
 }

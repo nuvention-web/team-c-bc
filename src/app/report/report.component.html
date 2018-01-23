@@ -1,0 +1,61 @@
+<div *ngIf="log">
+  <p>
+    Share this report to collaborators by
+    <a href="#" (click)="sendEmail()">
+      Sending Email
+    </a>
+  </p>
+  <p>
+    or use this link:
+    <a href="https://github-weekly-summarizer.firebaseapp.com/r/{{logId}}">https://github-weekly-summarizer.firebaseapp.com/r/{{logId}}</a>
+  </p>
+</div>
+
+<div class="report">
+  <h2 *ngIf="log">
+    Weekly Summarize for {{log.repo}} from {{getDateRange()}}
+  </h2>
+  <h3 *ngIf="commits && commits.length != 0">New Commits</h3>
+  <mat-card *ngFor="let commit of commits">
+    <p matLine>
+      <span id="time">{{getShortSHA(commit.sha)}}</span>
+      <span> {{commit.commit.author.name}}</span>
+      <span id="milestone">{{commit.commit.author.email}}</span>
+    </p>
+    <p matLine>
+      {{commit.commit.message}}
+    </p>
+  </mat-card>
+  <h3 *ngIf="openIssues && openIssues.length != 0">Open Issues</h3>
+  <div *ngFor="let issue of openIssues">
+    <mat-card *ngIf="inTimeRange(issue.created_at)">
+      <h4 matLine>#{{issue.number}} {{issue.title}}</h4>
+      <p matLine>
+        <span id="user">{{issue.user.login}}</span>
+        <span id="time"> {{getDateTimeString(issue.created_at)}}</span>
+        <span id="milestone"> Milestone {{issue.milestone.title}}</span>
+      </p>
+      <div matLine>
+        <mat-chip-list>
+          <mat-chip *ngFor="let label of issue.labels">{{label.name}}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-card>
+  </div>
+  <h3 *ngIf="closedIssues && closedIssues.length != 0">Closed Issues</h3>
+  <div *ngFor="let issue of closedIssues">
+    <mat-card *ngIf="inTimeRange(issue.created_at)">
+      <h4 matLine>#{{issue.number}} {{issue.title}}</h4>
+      <p matLine>
+        <span id="user">{{issue.user.login}}</span>
+        <span id="time"> {{getDateTimeString(issue.created_at)}}</span>
+        <span id="milestone"> Milestone: {{issue.milestone.title}}</span>
+      </p>
+      <div matLine>
+        <mat-chip-list>
+          <mat-chip *ngFor="let label of issue.labels">{{label.name}}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-card>
+  </div>
+</div>
