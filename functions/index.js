@@ -124,8 +124,8 @@ const APP_NAME = 'Cloud Storage for Firebase quickstart';
 
 const options = {
   auth: {
-    api_user: 'neyc07222',
-    api_key: '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'
+    api_user: 'USER_NAME',
+    api_key: 'API_KEY'
   }
 }
 

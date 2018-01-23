@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { SendGridTransport } from 'nodemailer-sendgrid-transport';
+
 import { Repo } from './repo';
 import { Issue } from './issue';
 import { Commit } from './commit';
