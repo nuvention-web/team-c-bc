@@ -1,6 +1,8 @@
 <div *ngIf="log">
   <p>
     Share this report to collaborators by
+    <!-- <span *ngFor="let collaborator of collaborators"> {{collaborator.login}}</span> -->
+     <!-- by -->
     <a href="#" (click)="sendEmail()">
       Sending Email
     </a>

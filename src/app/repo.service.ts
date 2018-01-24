@@ -7,6 +7,7 @@ import { Repo } from './repo';
 import { Issue } from './issue';
 import { Commit } from './commit';
 import { Response } from './response';
+import { User } from './user';
 
 
 @Injectable()
@@ -33,6 +34,11 @@ export class RepoService {
   public getCommits(userName, repoName, since_time, to_time): Observable<Commit[]> {
     return this.http.get<Commit[]>(`${RepoService.prefix}/repos/${userName}/${repoName}` +
       `/commits?since=${new Date(since_time).toISOString()}&until=${new Date(to_time).toISOString()}`);
+  }
+
+  public getUserList(userName, repoName): Observable<User[]> {
+    return this.http.get<User[]>(`${RepoService.prefix}/repos/${userName}/${repoName}` +
+      `/collaborators`);
   }
 
   public sendEmail(logId): Observable<Response> {

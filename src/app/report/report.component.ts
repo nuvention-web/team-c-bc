@@ -8,6 +8,7 @@ import { Repo } from '../repo';
 import { Issue } from '../issue';
 import { Commit } from '../commit';
 import { Log } from '../log';
+import { User } from '../user';
 
 @Component({
   selector: 'app-report',
@@ -24,6 +25,7 @@ export class ReportComponent implements OnInit {
   openIssues: Issue[];
   closedIssues: Issue[];
   commits: Commit[];
+  collaborators: User[];
 
   constructor(
     private repoService: RepoService,
@@ -45,6 +47,7 @@ export class ReportComponent implements OnInit {
     this.getRepoInfo();
     this.getRepoIssues();
     this.getCommits();
+    // this.getCollaborators();
   }
 
   getRepoInfo(): void {
@@ -62,6 +65,11 @@ export class ReportComponent implements OnInit {
   getCommits(): void {
     this.repoService.getCommits(this.log.owner, this.log.repo, this.log.from, this.log.to)
       .subscribe(commits => this.commits = commits);
+  }
+
+  getCollaborators(): void {
+    this.repoService.getUserList(this.log.owner, this.log.repo)
+      .subscribe(collaborators => this.collaborators = collaborators);
   }
 
   getDateTimeString(date): string {
